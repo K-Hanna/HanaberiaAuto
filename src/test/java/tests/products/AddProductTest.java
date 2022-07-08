@@ -32,20 +32,5 @@ public class AddProductTest extends BaseTest {
 
         new AccountPage(driver)
                 .goToProducts();
-
-        List<Products> products = generate();
-
-        for(Products product : products) {
-
-            new ProductsPage(driver)
-                    .addNewProduct();
-
-            new AddProductPage(driver)
-                    .fillImage(product.getImage())
-                    .fillName(product.getName())
-                    .fillDescription(product.getDescription())
-                    .fillPrice(product.getPrice())
-                    .submit();
-        }
     }
 }

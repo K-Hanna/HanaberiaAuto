@@ -51,23 +51,4 @@ public class Products {
 
         return productsList;
     }
-
-    public static List<String> test(){
-
-        List<String> productsList = new ArrayList<>();
-        FileInputStream fileInputStream;
-
-        try{
-            fileInputStream = new FileInputStream("src/test/resources/test.txt");
-            Scanner sc = new Scanner(fileInputStream);
-            while(sc.hasNextLine()) {
-                productsList.add(sc.nextLine());
-            }
-            sc.close();
-        } catch(Exception e) {
-            System.out.println("Brak pliku.");
-        }
-
-        return productsList;
-    }
 }
