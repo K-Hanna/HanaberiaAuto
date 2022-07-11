@@ -3,3 +3,8 @@ RING
 Aaa
 aaa
 20
+bbb
+NECKLACE
+Bbb
+bbb
+10

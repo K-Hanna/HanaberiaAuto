@@ -1,13 +1,11 @@
 package tests;
 
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.AccountPage;
 import pages.MainPage;
-import pages.products.AddProductPage;
-import pages.products.Products;
-import pages.products.ProductsPage;
+import pages.products.*;
 import utilities.BaseSteps;
 import utilities.BaseTest;
 
@@ -15,7 +13,9 @@ import java.util.List;
 
 public class CrudProductTest extends BaseTest {
 
-    @BeforeMethod
+    private List<Products> products;
+
+    @BeforeClass
     void goToProducts(){
         new MainPage(driver)
                 .login();
@@ -28,16 +28,16 @@ public class CrudProductTest extends BaseTest {
 
         new AccountPage(driver)
                 .goToProducts();
+
+        products = Products.generate();
     }
 
-    @Test
-    void createNewProduct(){
+    @Test(priority = 1)
+    void createProductTest(){
 
-        List<Products> productsList = Products.generate();
-
-        for(Products product : productsList){
+        for(Products product : products){
             new ProductsPage(driver)
-                    .addNewProduct();
+                    .addProduct();
 
             new AddProductPage(driver)
                     .fillImage(product.getImage())
@@ -46,6 +46,57 @@ public class CrudProductTest extends BaseTest {
                     .fillDescription(product.getDescription())
                     .fillPrice(product.getPrice())
                     .submit();
+        }
+    }
+
+    @Test(priority = 2)
+    void editProductTest(){
+
+        ProductsPage productsPage = new ProductsPage(driver);
+
+        for(Products product : products){
+            goToCategory(product.getCategory());
+            List<String> names = productsPage.getProductsNames();
+
+            for (int i = 0; i < names.size(); i++) {
+                if(names.get(i).equals(product.getName())){
+                    productsPage.editProduct(i);
+
+                    new EditProductPage(driver)
+                            .fillDescription("bbb")
+                            .submit();
+                }
+            }
+        }
+    }
+
+    @Test(priority = 3)
+    void deleteProductTest(){
+
+        ProductsPage productsPage = new ProductsPage(driver);
+
+        for(Products product : products){
+            goToCategory(product.getCategory());
+            List<String> names = productsPage.getProductsNames();
+
+            for (int i = 0; i < names.size(); i++) {
+                if(names.get(i).equals(product.getName())){
+                    productsPage.deleteProduct(i);
+
+                    new DeleteProductPage(driver)
+                            .submit();
+                }
+            }
+        }
+    }
+
+    private void goToCategory(String category){
+        switch (category) {
+            case "BRACELET" -> new ProductsPage(driver).goToTab(4);
+            case "EARRINGS" -> new ProductsPage(driver).goToTab(5);
+            case "NECKLACE" -> new ProductsPage(driver).goToTab(6);
+            case "RING" -> new ProductsPage(driver).goToTab(7);
+            default -> System.out.println("Wrong category given.");
         }
     }
 }

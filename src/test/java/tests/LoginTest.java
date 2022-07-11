@@ -8,11 +8,9 @@ import utilities.BaseTest;
 public class LoginTest extends BaseTest {
 
     @Test
-    public void login(){
+    public void loginTest(){
 
         new MainPage(driver).login();
-
         new BaseSteps().logInAs(driver);
-
     }
 }
