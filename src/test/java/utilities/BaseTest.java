@@ -9,7 +9,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import java.time.Duration;
-import static utilities.GetData.baseUrl;
+import static utilities.BaseSteps.baseUrl;
 
 public class BaseTest {
 

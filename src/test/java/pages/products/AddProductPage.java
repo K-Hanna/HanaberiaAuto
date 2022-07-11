@@ -39,6 +39,11 @@ public class AddProductPage extends PageObject {
         return this;
     }
 
+    public AddProductPage selectCategory(String value){
+        select(category, value);
+        return this;
+    }
+
     public AddProductPage fillName(String value){
         fill(name, value);
         return this;

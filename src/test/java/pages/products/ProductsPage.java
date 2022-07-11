@@ -15,6 +15,12 @@ public class ProductsPage extends PageObject {
     @FindBy(css = "i[class*='bi-check2-square']")
     private WebElement confirm;
 
+    @FindBy(css = "i[class*='bi-pencil-square']")
+    private WebElement editProduct;
+
+    @FindBy(css = "i[class*='bi-x-square']")
+    private WebElement deleteProduct;
+
     public ProductsPage(WebDriver driver) {
         super(driver);
     }
