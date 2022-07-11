@@ -1,9 +1,9 @@
 package tests;
 
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.AccountPage;
+import pages.NavBarPage;
 import pages.MainPage;
 import pages.products.*;
 import utilities.BaseSteps;
@@ -26,7 +26,7 @@ public class CrudProductTest extends BaseTest {
         new MainPage(driver)
                 .goToMyAccount();
 
-        new AccountPage(driver)
+        new NavBarPage(driver)
                 .goToProducts();
 
         products = Products.generate();
@@ -88,6 +88,11 @@ public class CrudProductTest extends BaseTest {
                 }
             }
         }
+    }
+
+    @AfterClass
+    void logOut(){
+        new MainPage(driver).logout();
     }
 
     private void goToCategory(String category){

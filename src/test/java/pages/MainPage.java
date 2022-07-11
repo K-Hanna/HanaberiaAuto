@@ -25,6 +25,9 @@ public class MainPage extends PageObject{
     @FindBy(xpath = "//*[text()='Moje dane']")
     private WebElement myData;
 
+    @FindBy(id = "logout")
+    private WebElement logout;
+
     public MainPage(WebDriver driver) {
         super(driver);
     }
@@ -38,5 +41,10 @@ public class MainPage extends PageObject{
         click(trigger);
         click(menuItems.get(5));
         elementShouldBeVisible(myData);
+    }
+
+    public void logout(){
+        click(logout);
+        elementShouldBeVisible(trigger);
     }
 }

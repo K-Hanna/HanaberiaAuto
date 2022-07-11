@@ -17,6 +17,12 @@ public class LoginPage extends PageObject {
     @FindBy(css = ".btn")
     private WebElement submitButton;
 
+    @FindBy(id = "register")
+    private WebElement register;
+
+    @FindBy(id = "resign")
+    private WebElement resign;
+
     public LoginPage(WebDriver driver) {
         super(driver);
     }
@@ -33,5 +39,10 @@ public class LoginPage extends PageObject {
 
     public void submit(){
         click(submitButton);
+    }
+
+    public void register(){
+        click(register);
+        elementShouldBeVisible(resign);
     }
 }

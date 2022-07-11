@@ -12,5 +12,6 @@ public class LoginTest extends BaseTest {
 
         new MainPage(driver).login();
         new BaseSteps().logInAs(driver);
+        new MainPage(driver).logout();
     }
 }

@@ -10,19 +10,19 @@ import static utilities.WebDriverUtils.*;
 public class AddProductPage extends PageObject {
 
     @FindBy(name = "imageName")
-    WebElement image;
+    private WebElement image;
 
     @FindBy(name = "category")
-    WebElement category;
+    private WebElement category;
 
     @FindBy(name = "name")
-    WebElement name;
+    private WebElement name;
 
     @FindBy(name = "description")
-    WebElement description;
+    private WebElement description;
 
     @FindBy(name = "price")
-    WebElement price;
+    private WebElement price;
 
     @FindBy(css = "i[class*='bi-check2-square']")
     private WebElement confirm;
