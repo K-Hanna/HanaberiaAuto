@@ -9,6 +9,8 @@ import pages.users.EditUserPage;
 import pages.users.UsersPage;
 import utilities.BaseTest;
 
+import static utilities.BaseSteps.*;
+
 public class CrudUserTest extends BaseTest {
 
     @Test(priority = 1)
@@ -20,16 +22,16 @@ public class CrudUserTest extends BaseTest {
         new LoginPage(driver).register();
 
         new AddUserPage(driver)
-                .fillUserName("Ala")
-                .fillContactForm("phone")
-                .fillContact("987654321")
-                .fillPasswords("12345")
+                .fillUserName(newLogin())
+                .fillContactForm(newContactForm1())
+                .fillContact(newContact1())
+                .fillPasswords(newPassword())
                 .submit();
 
         mainPage.login();
         new LoginPage(driver)
-                .fillUserName("Ala")
-                .fillPassword("12345")
+                .fillUserName(newLogin())
+                .fillPassword(newPassword())
                 .submit();
 
         mainPage.goToMyAccount();
@@ -40,9 +42,9 @@ public class CrudUserTest extends BaseTest {
         new UsersPage(driver).editUser();
 
         new EditUserPage(driver)
-                .fillContactForm("email")
-                .fillContact("ala@wp.pl")
-                .fillPasswords("12345")
+                .fillContactForm(newContactForm2())
+                .fillContact(newContact2())
+                .fillPasswords(newPassword())
                 .submit();
     }
 

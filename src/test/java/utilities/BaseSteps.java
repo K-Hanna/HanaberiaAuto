@@ -31,6 +31,30 @@ public class BaseSteps {
         return getProperty("login.as");
     }
 
+    public static String newLogin(){
+        return getProperty("new.login");
+    }
+
+    public static String newContactForm1(){
+        return getProperty("new.contactForm1");
+    }
+
+    public static String newContact1(){
+        return getProperty("new.contact1");
+    }
+
+    public static String newContactForm2(){
+        return getProperty("new.contactForm2");
+    }
+
+    public static String newContact2(){
+        return getProperty("new.contact2");
+    }
+
+    public static String newPassword(){
+        return getProperty("new.password");
+    }
+
     public void logInAsUser(WebDriver driver){
         new LoginPage(driver)
             .fillUserName(userLogin())
