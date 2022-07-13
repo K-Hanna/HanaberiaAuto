@@ -21,6 +21,14 @@ public class WebDriverUtils extends BaseTest{
         element.click();
     }
 
+    public static void click(String id){
+        WebElement element = driver.findElement(By.cssSelector("a[href='#" + id + "']"));
+        System.out.println(element);
+        elementShouldBeVisible(element);
+        elementShouldBeClickable(element);
+        element.click();
+    }
+
     public static void fill(WebElement element, String value){
         elementShouldBeVisible(element);
         element.clear();

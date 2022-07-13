@@ -13,7 +13,7 @@ import static utilities.BaseSteps.baseUrl;
 
 public class BaseTest {
 
-    protected WebDriver driver;
+    protected static WebDriver driver;
     protected static WebDriverWait explicitWait;
 
     @BeforeClass

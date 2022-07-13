@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -25,6 +26,9 @@ public class MainPage extends PageObject{
     @FindBy(xpath = "//*[text()='Moje dane']")
     private WebElement myData;
 
+    @FindBy(css = "i[class*='bi-basket2']")
+    private WebElement addToCart;
+
     @FindBy(id = "logout")
     private WebElement logout;
 
@@ -46,5 +50,11 @@ public class MainPage extends PageObject{
     public void logout(){
         click(logout);
         elementShouldBeVisible(trigger);
+    }
+
+    public void addItemToCart(String item){
+        click(item);
+        click(addToCart);
+        elementShouldBeVisible(logout);
     }
 }
