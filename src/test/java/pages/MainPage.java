@@ -20,7 +20,7 @@ public class MainPage extends PageObject{
     @FindBy(css = "[aria-label='Navigate Back']")
     private WebElement backButton;
 
-    private final By library = By.xpath("//span[text()=' Library ']");
+    private final By matIcon = By.tagName("mat-icon");
     private final By tabsLabels = By.cssSelector("[id^=mat-tab-label]");
 
     public MainPage(WebDriver driver) {
@@ -28,24 +28,29 @@ public class MainPage extends PageObject{
         waitForPageToLoad();
         passDanger();
         waitForPageToLoad();
-        waitForElementToBeVisible(library);
+        waitForElementToBeVisible(matIcon);
     }
 
     public void navigate(){
 
-        List<WebElement> tabs = driver.findElements(tabsLabels);
+        List<WebElement> tabs = getListOfElements(tabsLabels);
 
-        for(WebElement tab : tabs){
-            click(tab);
+        for(int i = 0; i < tabs.size(); i++){
+            tabs = getListOfElements(tabsLabels);
+            click(tabs.get(i));
             waitForPageToLoad();
-            saveToResults(getTextFromElement(tab) + "\n");
+            saveToResults("{\"" + getTextFromElement(tabs.get(i)) + "\" : [\n");
             List<WebElement> cards = getChildren(By.cssSelector(".main-container"),
                     By.cssSelector(".resources-list.resources-list__scroll.with-navigator"),
                     By.cssSelector(".resources-card-beta.with-navigator.ng-star-inserted"));
 
-            int length = Math.min(cards.size() - 1, 15);
-            for(int i = 0; i < length; i ++){
-                getDetails(cards.get(i));
+            int length = Math.min(cards.size(), 15);
+            for(int j = 0; j < length; j ++){
+                cards = getChildren(By.cssSelector(".main-container"),
+                        By.cssSelector(".resources-list.resources-list__scroll.with-navigator"),
+                        By.cssSelector(".resources-card-beta.with-navigator.ng-star-inserted"));
+
+                getDetails(cards.get(j), i);
             }
         }
     }
@@ -55,7 +60,7 @@ public class MainPage extends PageObject{
         click(proceedLink);
     }
 
-    private void getDetails(WebElement element){
+    private void getDetails(WebElement element, int i){
         click(element);
         waiting(1000);
 
@@ -63,24 +68,26 @@ public class MainPage extends PageObject{
                 By.cssSelector(".app-page-content.normal-scroll.not-ios-device"),
                 By.cssSelector(".resource-summary__title"));
         String title = getTextFromElement(titleLabel);
-        saveToResults("Title: " + title + "\n");
+        saveToResults("{\"Title\" : \"" + title + "\",\n");
 
         WebElement image = getChild(By.cssSelector(".main-container"),
                 By.cssSelector(".app-page-content.normal-scroll.not-ios-device"),
                 By.tagName("img"));
         String source = getAttribute(image, "src");
-        saveToResults("Image: " + source + "\n");
+        saveToResults("\"Image\" : \"" + source + "\",\n");
 
-        WebElement paragraph = getChild(By.cssSelector(".main-container"),
-                By.cssSelector(".app-page-content.normal-scroll.not-ios-device"),
-                By.cssSelector(".rendered-quill-content"));
-        String description = getTextFromElement(paragraph);
-        saveToResults("Description: " + description + "\n");
+        if(i == 0){
+            WebElement paragraph = getChild(By.cssSelector(".main-container"),
+                    By.cssSelector(".app-page-content.normal-scroll.not-ios-device"),
+                    By.cssSelector(".rendered-quill-content"));
+            String description = getTextFromElement(paragraph);
+            saveToResults("\"Description\" : \"" + description + "\",\n");
+        }
 
         getMatTabLabelContent();
         click(backButton);
-        waitForElementToBeVisible(library);
-        waiting(10000);
+        waitForElementToBeVisible(matIcon);
+        waiting(1000);
     }
 
     private void getMatTabLabelContent(){
@@ -89,9 +96,9 @@ public class MainPage extends PageObject{
                 By.cssSelector(".mat-tab-label-content"));
 
         for(WebElement element : matTabLabelContent){
-            if(!getTextFromElement(element).equals("AVAILABILITY")) {
+            if(!getTextFromElement(element).contains("AVAILABILITY")) {
                 click(element);
-                saveToResults(getTextFromElement(element) + "\n");
+                saveToResults("\"" + getTextFromElement(element) + "\":[\n");
 
                 List<WebElement> spans = getChildren(By.cssSelector(".main-container"),
                         By.cssSelector(".mat-tab-group.resource-details__data.mat-primary"),
@@ -106,17 +113,22 @@ public class MainPage extends PageObject{
                         By.cssSelector(".mat-tab-body-wrapper"),
                         By.tagName("p"));
 
+                saveToResults("{\n");
                 if(parahraphs.size() != 0) {
                     for (int i = 0; i < spans.size() - 1; i++) {
-                        saveToResults(getTextFromElement(spans.get(i)) + ": " + getTextFromElement(parahraphs.get(i)) + "\n");
+                        saveToResults("\"" + getTextFromElement(spans.get(i)) + "\" : \""
+                                + getTextFromElement(parahraphs.get(i)) + "\",\n");
                     }
                 } else {
                     Set<String> spanSet = new HashSet<>();
                     for (WebElement span : spans) {
                         spanSet.add(getTextFromElement(span));
                     }
-                    saveToResults(Arrays.toString(spanSet.toArray()) + "\n");
+                    for(String span : spanSet){
+                        saveToResults("\"" + span + "\" : \"\",");
+                    }
                 }
+                saveToResults("}\n],\n");
             }
         }
     }

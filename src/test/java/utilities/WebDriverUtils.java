@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -29,6 +30,12 @@ public class WebDriverUtils extends BaseTest{
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
+    public static void waitForElementToBeVisible(WebElement element){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        wait.pollingEvery(Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
     public static void waiting(int milis){
         try{
             Thread.sleep(milis);
@@ -36,6 +43,19 @@ public class WebDriverUtils extends BaseTest{
             e.printStackTrace();
         }
     }
+
+/*    public static boolean isParagraphVisible(){
+        boolean isVisible = false;
+        WebElement element = driver.findElement(By.cssSelector(".main-container"));
+        WebElement element1 = element.findElement(By.cssSelector(".app-page-content.normal-scroll.not-ios-device"));
+        try {
+            WebElement paragraph = element1.findElement(By.cssSelector(".rendered-quill-content"));
+            if(paragraph != null)
+                isVisible = true;
+        } catch (NoSuchElementException ignore){}
+
+        return isVisible;
+    }*/
 
     public static void elementShouldBeVisible(WebElement element){
         explicitWait.until(ExpectedConditions.visibilityOf(element));
@@ -51,7 +71,6 @@ public class WebDriverUtils extends BaseTest{
             elementShouldBeClickable(element);
             element.click();
         } catch (StaleElementReferenceException e){
-            waiting(2000);
             elementShouldBeVisible(element);
             elementShouldBeClickable(element);
             element.click();
@@ -64,6 +83,21 @@ public class WebDriverUtils extends BaseTest{
 
     public static String getTextFromElement(WebElement element){
         return element.getText();
+    }
+
+    public static WebElement getSibling(WebElement element){
+        return element.findElement(By.xpath("following-sibling::*"));
+    }
+
+    public static List<WebElement> getListOfElements(By locator){
+        List<WebElement> elements;
+        try{
+            elements = driver.findElements(locator);
+        } catch (StaleElementReferenceException e){
+            driver.navigate().refresh();
+            elements = driver.findElements(locator);
+        }
+        return elements;
     }
 
     public static List<WebElement> getChildren(By locator, By locator1, By locator2){
@@ -88,7 +122,7 @@ public class WebDriverUtils extends BaseTest{
         try {
             element = driver.findElement(locator);
             element1 = element.findElement(locator1);
-        } catch (StaleElementReferenceException | NoSuchElementException e) {
+        } catch (StaleElementReferenceException e) {
             driver.navigate().refresh();
             element = driver.findElement(locator);
             element1 = element.findElement(locator1);
