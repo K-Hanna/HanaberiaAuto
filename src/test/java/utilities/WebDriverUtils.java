@@ -45,59 +45,51 @@ public class WebDriverUtils extends BaseTest{
         explicitWait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    public static List<WebElement> getListOfElements(By locator){
-        List<WebElement> elements;
-        try {
-            elements = driver.findElements(locator);
-        } catch (StaleElementReferenceException e){
-            driver.navigate().refresh();
-            elements = driver.findElements(locator);
-        }
-        return elements;
-    }
-
     public static void click(WebElement element){
-        elementShouldBeVisible(element);
-        elementShouldBeClickable(element);
-        element.click();
+        try {
+            elementShouldBeVisible(element);
+            elementShouldBeClickable(element);
+            element.click();
+        } catch (StaleElementReferenceException e){
+            waiting(2000);
+            elementShouldBeVisible(element);
+            elementShouldBeClickable(element);
+            element.click();
+        }
     }
 
-    public static String getScr(WebElement element){
-        return element.getAttribute("src");
-    }
-
-    public static String getAttribute(WebElement element, By locator, String attribute){
-        WebElement element1 = element.findElement(locator);
-        return element1.getAttribute(attribute);
+    public static String getAttribute(WebElement element, String attribute){
+        return element.getAttribute(attribute);
     }
 
     public static String getTextFromElement(WebElement element){
-        elementShouldBeVisible(element);
         return element.getText();
     }
 
-    public static WebElement getChild(By locator, By locator1){
-        WebElement element = driver.findElement(locator);
-        return element.findElement(locator1);
-    }
-
-    public static List<WebElement> getChildren(By locator, By locator1){
-        WebElement element = driver.findElement(locator);
-        return element.findElements(locator1);
-    }
-
     public static List<WebElement> getChildren(By locator, By locator1, By locator2){
-        WebElement element = driver.findElement(locator);
-        WebElement element1 = element.findElement(locator1);
-        return element1.findElements(locator2);
-    }
-
-    public static WebElement getChild(By locator, By locator1, By locator2){
+        waiting(500);
+        
         WebElement element, element1;
         try {
             element = driver.findElement(locator);
             element1 = element.findElement(locator1);
-        } catch (NoSuchElementException exception){
+        } catch (StaleElementReferenceException | NoSuchElementException e) {
+            driver.navigate().refresh();
+            element = driver.findElement(locator);
+            element1 = element.findElement(locator1);
+        }
+        return element1.findElements(locator2);
+    }
+
+    public static WebElement getChild(By locator, By locator1, By locator2){
+        waiting(500);
+
+        WebElement element, element1;
+        try {
+            element = driver.findElement(locator);
+            element1 = element.findElement(locator1);
+        } catch (StaleElementReferenceException | NoSuchElementException e) {
+            driver.navigate().refresh();
             element = driver.findElement(locator);
             element1 = element.findElement(locator1);
         }
@@ -105,18 +97,20 @@ public class WebDriverUtils extends BaseTest{
     }
 
     public static List<WebElement> getChildren(By locator, By locator1, By locator2, By locator3){
-        WebElement element = driver.findElement(locator);
-        WebElement element1 = element.findElement(locator1);
-        WebElement element2 = element1.findElement(locator2);
-        return element2.findElements(locator3);
-    }
+        waiting(500);
 
-    public static List<WebElement> getChildren(By locator, By locator1, By locator2, By locator3, By locator4){
-        WebElement element = driver.findElement(locator);
-        WebElement element1 = element.findElement(locator1);
-        WebElement element2 = element1.findElement(locator2);
-        WebElement element3 = element2.findElement(locator3);
-        return element3.findElements(locator4);
+        WebElement element, element1, element2;
+        try {
+            element = driver.findElement(locator);
+            element1 = element.findElement(locator1);
+            element2 = element1.findElement(locator2);
+        } catch (StaleElementReferenceException | NoSuchElementException e) {
+            driver.navigate().refresh();
+            element = driver.findElement(locator);
+            element1 = element.findElement(locator1);
+            element2 = element1.findElement(locator2);
+        }
+        return element2.findElements(locator3);
     }
 
     public static void saveToResults(String content){

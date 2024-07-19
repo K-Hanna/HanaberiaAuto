@@ -20,7 +20,7 @@ public class MainPage extends PageObject{
     @FindBy(css = "[aria-label='Navigate Back']")
     private WebElement backButton;
 
-    private final By logo = By.cssSelector(".sidenav__logo");
+    private final By library = By.xpath("//span[text()=' Library ']");
     private final By tabsLabels = By.cssSelector("[id^=mat-tab-label]");
 
     public MainPage(WebDriver driver) {
@@ -28,7 +28,7 @@ public class MainPage extends PageObject{
         waitForPageToLoad();
         passDanger();
         waitForPageToLoad();
-        waitForElementToBeVisible(logo);
+        waitForElementToBeVisible(library);
     }
 
     public void navigate(){
@@ -45,7 +45,6 @@ public class MainPage extends PageObject{
 
             int length = Math.min(cards.size() - 1, 15);
             for(int i = 0; i < length; i ++){
-                saveToResults(getAttribute(cards.get(i), By.tagName("a"),"aria-label") + "\n");
                 getDetails(cards.get(i));
             }
         }
@@ -60,9 +59,16 @@ public class MainPage extends PageObject{
         click(element);
         waiting(1000);
 
+        WebElement titleLabel =getChild(By.cssSelector(".main-container"),
+                By.cssSelector(".app-page-content.normal-scroll.not-ios-device"),
+                By.cssSelector(".resource-summary__title"));
+        String title = getTextFromElement(titleLabel);
+        saveToResults("Title: " + title + "\n");
+
         WebElement image = getChild(By.cssSelector(".main-container"),
-                By.cssSelector(".app-page-content.normal-scroll.not-ios-device"),By.tagName("img"));
-        String source = getScr(image);
+                By.cssSelector(".app-page-content.normal-scroll.not-ios-device"),
+                By.tagName("img"));
+        String source = getAttribute(image, "src");
         saveToResults("Image: " + source + "\n");
 
         WebElement paragraph = getChild(By.cssSelector(".main-container"),
@@ -73,6 +79,8 @@ public class MainPage extends PageObject{
 
         getMatTabLabelContent();
         click(backButton);
+        waitForElementToBeVisible(library);
+        waiting(10000);
     }
 
     private void getMatTabLabelContent(){
@@ -83,7 +91,8 @@ public class MainPage extends PageObject{
         for(WebElement element : matTabLabelContent){
             if(!getTextFromElement(element).equals("AVAILABILITY")) {
                 click(element);
-                saveToResults(getTextFromElement(element));
+                saveToResults(getTextFromElement(element) + "\n");
+
                 List<WebElement> spans = getChildren(By.cssSelector(".main-container"),
                         By.cssSelector(".mat-tab-group.resource-details__data.mat-primary"),
                         By.cssSelector(".mat-tab-body-wrapper"),
@@ -99,12 +108,12 @@ public class MainPage extends PageObject{
 
                 if(parahraphs.size() != 0) {
                     for (int i = 0; i < spans.size() - 1; i++) {
-                        saveToResults(spans.get(i).getText() + ": " + parahraphs.get(i).getText() + "\n");
+                        saveToResults(getTextFromElement(spans.get(i)) + ": " + getTextFromElement(parahraphs.get(i)) + "\n");
                     }
                 } else {
                     Set<String> spanSet = new HashSet<>();
                     for (WebElement span : spans) {
-                        spanSet.add(span.getText());
+                        spanSet.add(getTextFromElement(span));
                     }
                     saveToResults(Arrays.toString(spanSet.toArray()) + "\n");
                 }
