@@ -8,7 +8,6 @@ import org.testng.Assert;
 
 import java.time.Duration;
 import java.util.*;
-import java.util.NoSuchElementException;
 
 public class WebDriverUtils extends BaseTest{
 
@@ -87,28 +86,16 @@ public class WebDriverUtils extends BaseTest{
     }
 
     public static List<WebElement> getListOfElements(By locator){
-        List<WebElement> elements;
-        try{
-            elements = driver.findElements(locator);
-        } catch (StaleElementReferenceException e){
-            driver.navigate().refresh();
-            elements = driver.findElements(locator);
-        }
-        return elements;
+        return driver.findElements(locator);
     }
 
     public static List<WebElement> getChildren(By locator, By locator1, By locator2){
         waiting(500);
         
         WebElement element, element1;
-        try {
             element = driver.findElement(locator);
             element1 = element.findElement(locator1);
-        } catch (StaleElementReferenceException | NoSuchElementException e) {
-            driver.navigate().refresh();
-            element = driver.findElement(locator);
-            element1 = element.findElement(locator1);
-        }
+
         return element1.findElements(locator2);
     }
 
@@ -116,14 +103,9 @@ public class WebDriverUtils extends BaseTest{
         waiting(500);
 
         WebElement element, element1;
-        try {
             element = driver.findElement(locator);
             element1 = element.findElement(locator1);
-        } catch (StaleElementReferenceException e) {
-            driver.navigate().refresh();
-            element = driver.findElement(locator);
-            element1 = element.findElement(locator1);
-        }
+
         return element1.findElement(locator2);
     }
 
@@ -131,16 +113,10 @@ public class WebDriverUtils extends BaseTest{
         waiting(500);
 
         WebElement element, element1, element2;
-        try {
             element = driver.findElement(locator);
             element1 = element.findElement(locator1);
             element2 = element1.findElement(locator2);
-        } catch (StaleElementReferenceException | NoSuchElementException e) {
-            driver.navigate().refresh();
-            element = driver.findElement(locator);
-            element1 = element.findElement(locator1);
-            element2 = element1.findElement(locator2);
-        }
+
         return element2.findElements(locator3);
     }
 

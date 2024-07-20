@@ -22,7 +22,7 @@ public class DetailsPage extends PageObject {
     private final By spanTag = By.tagName("span");
     private final By pTag = By.tagName("p");
     private final By backButton = By.cssSelector("[aria-label='Navigate Back']");
-    private final By matIcon = By.tagName("mat-icon");
+    private final By logoIcon = By.cssSelector(".sidenav__logo");
 
     public DetailsPage(WebDriver driver){
         super(driver);
@@ -49,7 +49,7 @@ public class DetailsPage extends PageObject {
 
         getMatTabLabelContent();
         click(backButton);
-        waitForElementToBeVisible(matIcon);
+        waitForElementToBeVisible(logoIcon);
         waiting(1000);
     }
 

@@ -33,5 +33,6 @@ public class GetResourcesTest extends BaseTest {
                 new DetailsPage(driver).getDetails(cards.get(j), i);
             }
         }
+        saveToResults("]}]}");
     }
 }

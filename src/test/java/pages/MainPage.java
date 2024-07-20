@@ -3,7 +3,6 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import static utilities.WebDriverUtils.*;
 
@@ -11,7 +10,7 @@ import java.util.*;
 
 public class MainPage extends PageObject{
 
-    private final By matIcon = By.tagName("mat-icon");
+    private final By logoIcon = By.cssSelector(".sidenav__logo");
     private final By tabsLabels = By.cssSelector("[id^=mat-tab-label]");
     private final By mainContainer = By.cssSelector(".main-container");
     private final By resourceList = By.cssSelector(".resources-list.resources-list__scroll.with-navigator");
@@ -20,7 +19,7 @@ public class MainPage extends PageObject{
     public MainPage(WebDriver driver) {
         super(driver);
         waitForPageToLoad();
-        waitForElementToBeVisible(matIcon);
+        waitForElementToBeVisible(logoIcon);
     }
 
     public int getTabListSize(){
