@@ -7,10 +7,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 public class WebDriverUtils extends BaseTest{
 
@@ -30,12 +28,6 @@ public class WebDriverUtils extends BaseTest{
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
-    public static void waitForElementToBeVisible(WebElement element){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
-        wait.pollingEvery(Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(element));
-    }
-
     public static void waiting(int milis){
         try{
             Thread.sleep(milis);
@@ -43,19 +35,6 @@ public class WebDriverUtils extends BaseTest{
             e.printStackTrace();
         }
     }
-
-/*    public static boolean isParagraphVisible(){
-        boolean isVisible = false;
-        WebElement element = driver.findElement(By.cssSelector(".main-container"));
-        WebElement element1 = element.findElement(By.cssSelector(".app-page-content.normal-scroll.not-ios-device"));
-        try {
-            WebElement paragraph = element1.findElement(By.cssSelector(".rendered-quill-content"));
-            if(paragraph != null)
-                isVisible = true;
-        } catch (NoSuchElementException ignore){}
-
-        return isVisible;
-    }*/
 
     public static void elementShouldBeVisible(WebElement element){
         explicitWait.until(ExpectedConditions.visibilityOf(element));
@@ -77,6 +56,12 @@ public class WebDriverUtils extends BaseTest{
         }
     }
 
+    public static void click(By locator){
+        WebElement element = driver.findElement(locator);
+        elementShouldBeClickable(element);
+        click(element);
+    }
+
     public static String getAttribute(WebElement element, String attribute){
         return element.getAttribute(attribute);
     }
@@ -85,8 +70,20 @@ public class WebDriverUtils extends BaseTest{
         return element.getText();
     }
 
-    public static WebElement getSibling(WebElement element){
-        return element.findElement(By.xpath("following-sibling::*"));
+    public static List<String> getListOfTexts(List<WebElement> elements){
+        List<String> textFromElements = new ArrayList<>();
+        for(WebElement element : elements){
+            textFromElements.add(getTextFromElement(element));
+        }
+        return textFromElements;
+    }
+
+    public static Set<String> getSetOfText(List<WebElement> elements){
+        Set<String> textFromElements = new HashSet<>();
+        for(WebElement element : elements){
+            textFromElements.add(getTextFromElement(element));
+        }
+        return textFromElements;
     }
 
     public static List<WebElement> getListOfElements(By locator){
