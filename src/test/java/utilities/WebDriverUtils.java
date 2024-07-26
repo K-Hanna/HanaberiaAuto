@@ -91,7 +91,6 @@ public class WebDriverUtils extends BaseTest{
 
     public static List<WebElement> getChildren(By locator, By locator1, By locator2){
         waiting(500);
-        
         WebElement element, element1;
             element = driver.findElement(locator);
             element1 = element.findElement(locator1);
@@ -101,7 +100,6 @@ public class WebDriverUtils extends BaseTest{
 
     public static WebElement getChild(By locator, By locator1, By locator2){
         waiting(500);
-
         WebElement element, element1;
             element = driver.findElement(locator);
             element1 = element.findElement(locator1);
@@ -111,7 +109,6 @@ public class WebDriverUtils extends BaseTest{
 
     public static List<WebElement> getChildren(By locator, By locator1, By locator2, By locator3){
         waiting(500);
-
         WebElement element, element1, element2;
             element = driver.findElement(locator);
             element1 = element.findElement(locator1);

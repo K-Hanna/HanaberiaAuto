@@ -3,6 +3,7 @@ package utilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
@@ -11,17 +12,20 @@ public class WebDriverInit {
     public static WebDriver setUpDriver(){
         WebDriver driver;
 
-        switch (TestData.getBrowser()){
-            case "chrome":
+        switch (TestData.getBrowser()) {
+            case "chrome" -> {
                 System.setProperty("webdriver.chrome.driver", "src/test/resources/binaries/chromedriver.exe");
                 driver = new ChromeDriver(setChromeOptions());
-                break;
-            case "firefox":
+            }
+            case "firefox" -> {
                 System.setProperty("webdriver.gecko.driver", "src/test/resources/binaries/geckodriver.exe");
                 driver = new FirefoxDriver(setFirefoxOptions());
-                break;
-            default:
-                throw new IllegalArgumentException("Wrong browser provided");
+            }
+            case "edge" -> {
+                System.setProperty("webdriver.edge.driver", "src/test/resources/binaries/msedgedriver.exe");
+                driver = new EdgeDriver();
+            }
+            default -> throw new IllegalArgumentException("Wrong browser provided");
         }
 
         driver.manage().window().maximize();
